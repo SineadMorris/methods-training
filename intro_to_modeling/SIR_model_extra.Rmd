@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 ### Contact info
 
-Github: https://github.com/SineadMorris/methods-training
+Github: https://github.com/SineadMorris/trainings
 
 Email: run7@cdc.gov
 
@@ -73,7 +73,7 @@ eqns <- function(t, y, parms) {
 
 ```{r set-parameters}
 # define parameters we know
-N <- 10000
+N  <- 10000
 R0 <- 2
 infectious_period <- 3
 

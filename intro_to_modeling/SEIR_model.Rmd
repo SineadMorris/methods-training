@@ -1,5 +1,5 @@
 ---
-title: "Simulate the SIR model"
+title: "Simulate the SEIR model"
 author: "Sinead E. Morris"
 date: "29 June 2022"
 output: html_document
@@ -41,12 +41,12 @@ We define the model equations inside a function.
 Input:
 
 * t = time steps to simulate over
-* y vector = initial values for variables S, I, R
+* y vector = initial values for variables S, E, I, R
 * parms = vector of parameter values
 
 Output:
 
-* Values of S, I, R at each time step
+* Values of S, E, I, R at each time step
 
 ```{r define-eqns}
 eqns <- function(t, y, parms) {
@@ -57,14 +57,17 @@ eqns <- function(t, y, parms) {
     # Define change in S
     dS <- - beta * S * I
     
+    # Define change in E
+    dE <- beta * S * I - sigma * E
+    
     # Define change in I
-    dI <- beta * S * I - gamma * I
+    dI <- sigma * E - gamma * I
     
     # Define change in R
     dR <- gamma * I
     
     # Keep track of values at each time step
-     return(list( c(dS, dI, dR) ))
+     return(list( c(dS, dE, dI, dR) ))
   })
 }
 ```
@@ -77,16 +80,18 @@ eqns <- function(t, y, parms) {
 N  <- 10000
 R0 <- 2
 infectious_period <- 3
+latent_period     <- 2
 
 # Use these to get model parameters
 gamma <- 1/infectious_period
+sigma <- 1/latent_period
 
 # Note: R0 = beta N / gamma  <=>  beta = R0 * gamma / N
 
-parameters <- c(beta = R0 * gamma / N, gamma = gamma)
+parameters <- c(beta = R0 * gamma / N, gamma = gamma, sigma = sigma)
 
-# define starting values ('initial conditions') for S, I, R
-ics <- c(S = N - 1, I = 1, R = 0)
+# define starting values ('initial conditions') for S, E, I, R
+ics <- c(S = N - 1, E = 0, I = 1, R = 0)
 
 # define time-steps to consider
 days <- 1:150
@@ -111,13 +116,14 @@ plot( x = sim[, "time"], y = sim[, "S"],               # x & y variables to plot
       xlab = "Days", ylab = "Number of people")        # add x & y axis labels
 
 # Add lines for t vs I and t vs R
+lines(x = sim[, "time"], y = sim[, "E"], col = "darkmagenta", lwd = 2.5)
 lines(x = sim[, "time"], y = sim[, "I"], col = "dodgerblue1", lwd = 2.5)
 lines(x = sim[, "time"], y = sim[, "R"], col = "dodgerblue4", lwd = 2.5)
 
 # Add legend to plot
 legend(x = 125, y = 7000,                              # position (x,y) = top-left corner                
-       legend = c("S", "I", "R"),                      # names to display for variables
-       col = c("black", "dodgerblue1", "dodgerblue4"), # colors to display
+       legend = c("S", "E", "I", "R"),                 # names to display for variables
+       col = c("black", "darkmagenta", "dodgerblue1", "dodgerblue4"),   
        pch = 16,                                       # symbol to display (16 = circle)
        cex = 1)                                        # size of legend
 ```
