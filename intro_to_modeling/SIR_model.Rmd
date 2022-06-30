@@ -58,10 +58,10 @@ eqns <- function(t, y, parms) {
     dS <- - beta * S * I
     
     # Define change in I
-    dI <- + beta * S * I - gamma * I
+    dI <- beta * S * I - gamma * I
     
     # Define change in R
-    dR <- + gamma * I
+    dR <- gamma * I
     
     # Keep track of values at each time step
      return(list( c(dS, dI, dR) ))
@@ -74,21 +74,22 @@ eqns <- function(t, y, parms) {
 
 ```{r set-parameters}
 # define parameters we know
-R0 <- 1.1
-infectious_period <- 2
+N <- 10000
+R0 <- 2
+infectious_period <- 3
 
 # Use these to get model parameters
 gamma <- 1/infectious_period
 
-# Note: R0 = beta / gamma  <=>  beta = R0 * gamma
+# Note: R0 = beta N / gamma  <=>  beta = R0 * gamma / N
 
-parameters <- c(beta = R0 * gamma, gamma = gamma)
+parameters <- c(beta = R0 * gamma / N, gamma = gamma)
 
 # define starting values ('initial conditions') for S, I, R
-ics <- c(S = 999, I = 1, R = 0)
+ics <- c(S = N - 1, I = 1, R = 0)
 
 # define time-steps to consider
-days <- 1:30
+days <- 1:150
 ```
 
 
@@ -106,7 +107,7 @@ sim <- ode(y = ics, times = days, func = eqns, parms = parameters)
 plot( x = sim[, "time"], y = sim[, "S"],               # x & y variables to plot
       type = "l",                                      # type of plot (l = line) 
       col = "black", lwd = 2.5,                        # color & width of line
-      ylim = c(0, 1000),                               # set limits of y-axis 
+      ylim = c(0, 10000),                               # set limits of y-axis 
       xlab = "Days", ylab = "Number of people")        # add x & y axis labels
 
 # Add lines for t vs I and t vs R
@@ -114,7 +115,7 @@ lines(x = sim[, "time"], y = sim[, "I"], col = "dodgerblue1", lwd = 2.5)
 lines(x = sim[, "time"], y = sim[, "R"], col = "dodgerblue4", lwd = 2.5)
 
 # Add legend to plot
-legend(x = 25, y = 800,                                # position (x,y) = top-left corner                
+legend(x = 125, y = 7000,                                # position (x,y) = top-left corner                
        legend = c("S", "I", "R"),                      # names to display for variables
        col = c("black", "dodgerblue1", "dodgerblue4"), # colors to display
        pch = 16,                                       # symbol to display (16 = circle)

@@ -73,21 +73,22 @@ eqns <- function(t, y, parms) {
 
 ```{r set-parameters}
 # define parameters we know
-R0 <- 1.1
-infectious_period <- 2
+N <- 10000
+R0 <- 2
+infectious_period <- 3
 
 # Use these to get model parameters
 gamma <- 1/infectious_period
 
 # Note: R0 = beta / gamma  <=>  beta = R0 * gamma
 
-parameters <- c(beta = R0 * gamma, gamma = gamma)
+parameters <- c(beta = R0 * gamma / N, gamma = gamma)
 
 # define starting values ('initial conditions') for S, I, R
-ics <- c(S = 999, I = 1, R = 0)
+ics <- c(S = N - 1, I = 1, R = 0)
 
 # define time-steps to consider
-days <- 1:30
+days <- 1:150
 ```
 
 
@@ -146,14 +147,14 @@ sim %>% gather(variable, value, S, I, R) %>%
   #    name = legend title
   #    values = manual color palette
   #    breaks = can use to display the variables in a different order from the default (alphabetical)
-  scale_colour_manual(name = "Status", values = mycolors, breaks = c("S", "I", "R")) +
+  scale_colour_manual(name = "Compartment", values = mycolors, breaks = c("S", "I", "R")) +
   
   # 4. (optional) set a general theme for the plot -- includes background color, axis styles etc
   #    (other options = theme_classic(), theme_grey() ...)
   theme_classic() +
   
   # 5. (optional) modify position of legend
-  theme(legend.position = c(0.8, 0.6)) +
+  theme(legend.position = c(0.8, 0.5)) +
   
   # 6. (optional) add labels for the axes
   labs(x = "Days", y = "Number of people")
@@ -164,12 +165,16 @@ sim %>% gather(variable, value, S, I, R) %>%
 
 It sometimes be useful to create interactive plots and/or applications which allow users to play around with model inputs/outputs without requiring R. The example below uses the `shinySIR` package to create an interactive app for simulating the SIR model.
 
-```{r, include = FALSE}
+```{r}
 # Load (and install) shinySIR
 library(shinySIR)
 
 # Create app of the SIR model (one of the built-in options in shinySIR)
 run_shiny(model = "SIR")
+
+# Note: the color palette used here is ggplot's default. 
+# We can instead apply our manual scale using the same argument as above:
+# run_shiny(model = "SIR", values = mycolors)
 ```
 
 
