@@ -2,7 +2,7 @@
 inspiration/
 
 # Output markdown files
-.html
+*.html
 
 # Cant track powerpoint files
 *.pptx
@@ -12,10 +12,10 @@ inspiration/
 .Rapp.history
 
 # Session Data files
-.RData
+*.RData
 
 # User-specific files
-.Ruserdata
+*.Ruserdata
 
 # Example code in package build process
 *-Ex.R
@@ -41,4 +41,4 @@ inspiration/
 *.knit.md
 
 # R Environment Variables
-.Renviron
+*.Renviron
