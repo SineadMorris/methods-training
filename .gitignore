@@ -42,3 +42,10 @@ inspiration/
 
 # R Environment Variables
 *.Renviron
+
+
+# Code for making slide figures
+/intro_to_modeling/slide_figs.R
+
+# Slide figures
+intro_to_modeling/figs/
