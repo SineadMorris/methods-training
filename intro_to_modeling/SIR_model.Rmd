@@ -1,7 +1,6 @@
 ---
 title: "Simulate the SIR model"
 author: "Sinead E. Morris"
-date: "29 June 2022"
 output: html_document
 ---
 
@@ -74,7 +73,7 @@ eqns <- function(t, y, parms) {
 
 ```{r set-parameters}
 # define parameters we know
-N  <- 10000
+N  <- 10000  
 R0 <- 2
 infectious_period <- 3
 

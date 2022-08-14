@@ -1,7 +1,6 @@
 ---
 title: "Simulate the SEIRS model"
 author: "Sinead E. Morris"
-date: "29 June 2022"
 output: html_document
 ---
 
