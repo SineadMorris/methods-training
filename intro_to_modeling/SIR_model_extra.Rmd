@@ -77,8 +77,6 @@ R0 <- 2
 infectious_period <- 3
 
 # Use these to get model parameters
-
-# Note: infectious_period = 1 / gamma   <=>  gamma <- 1/ infectious_period
 gamma <- 1/infectious_period
 
 # Note: R0 = beta / gamma  <=>  beta = R0 * gamma
